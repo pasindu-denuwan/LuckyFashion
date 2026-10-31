@@ -29,13 +29,13 @@ export default function DesignSystemPage() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const colors = [
-    { name: "Primary Dark", hex: "#17191D", token: "lucky-dark", bg: "bg-[#17191D]", text: "text-white" },
-    { name: "Card Dark", hex: "#242830", token: "lucky-darkCard", bg: "bg-[#242830]", text: "text-white" },
-    { name: "Off-White", hex: "#F8F8F6", token: "lucky-offwhite", bg: "bg-[#F8F8F6]", text: "text-[#17191D]" },
-    { name: "Brand Blue", hex: "#2563EB", token: "lucky-blue", bg: "bg-[#2563EB]", text: "text-white" },
-    { name: "Light Neutral", hex: "#ECEEF1", token: "lucky-lightNeutral", bg: "bg-[#ECEEF1]", text: "text-[#17191D]" },
-    { name: "Muted Text", hex: "#6B7280", token: "lucky-mutedText", bg: "bg-[#6B7280]", text: "text-white" },
-    { name: "Border Light", hex: "#E5E7EB", token: "lucky-borderLight", bg: "bg-[#E5E7EB]", text: "text-[#17191D]" },
+    { name: "Deep Royal Plum", hex: "#290044", token: "lucky-dark", bg: "bg-[#290044]", text: "text-[#EEE3B0]" },
+    { name: "Rich Violet", hex: "#500071", token: "lucky-darkCard", bg: "bg-[#500071]", text: "text-[#EEE3B0]" },
+    { name: "Berry Magenta", hex: "#8A2A78", token: "lucky-magenta", bg: "bg-[#8A2A78]", text: "text-white" },
+    { name: "Warm Cream Gold", hex: "#EEE3B0", token: "lucky-cream", bg: "bg-[#EEE3B0]", text: "text-[#290044]" },
+    { name: "Soft Canvas Cream", hex: "#FAF7EE", token: "lucky-offwhite", bg: "bg-[#FAF7EE]", text: "text-[#290044]" },
+    { name: "Muted Plum Gray", hex: "#6E5B70", token: "lucky-mutedText", bg: "bg-[#6E5B70]", text: "text-white" },
+    { name: "Cream Border Light", hex: "#E5DBBF", token: "lucky-borderLight", bg: "bg-[#E5DBBF]", text: "text-[#290044]" },
   ];
 
   return (

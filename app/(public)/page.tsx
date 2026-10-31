@@ -124,8 +124,8 @@ export default async function HomePage() {
       <section className="relative overflow-hidden bg-gradient-to-b from-white to-lucky-offwhite pt-16 pb-20 border-b border-lucky-borderLight">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lucky-lightNeutral text-xs font-semibold text-lucky-mutedText mb-6 border border-lucky-borderLight">
-              <Sparkles className="w-3.5 h-3.5 text-lucky-blue" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-lucky-cream text-xs font-bold text-lucky-dark mb-6 border border-lucky-borderLight shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-lucky-magenta" />
               <span>B2B Contract Manufacturing & Bulk Solutions</span>
             </div>
 
@@ -182,7 +182,7 @@ export default async function HomePage() {
                 key={idx}
                 className="p-6 rounded-2xl bg-white border border-lucky-borderLight shadow-sm space-y-3"
               >
-                <div className="w-10 h-10 rounded-xl bg-lucky-lightNeutral flex items-center justify-center text-lucky-blue">
+                <div className="w-10 h-10 rounded-xl bg-lucky-cream flex items-center justify-center text-lucky-magenta font-bold">
                   <Icon className="w-5 h-5" />
                 </div>
                 <h3 className="font-heading font-bold text-base text-lucky-dark">
@@ -209,7 +209,7 @@ export default async function HomePage() {
             </p>
           </div>
           <Button asChild variant="ghost" size="sm">
-            <Link href="/products" className="inline-flex items-center gap-1 font-semibold text-lucky-blue">
+            <Link href="/products" className="inline-flex items-center gap-1 font-bold text-lucky-magenta">
               All Categories <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
@@ -220,16 +220,16 @@ export default async function HomePage() {
             <Link
               key={cat.id}
               href={`/products?category=${cat.slug}`}
-              className="group p-6 rounded-2xl bg-white border border-lucky-borderLight shadow-sm hover:shadow-md hover:border-lucky-blue/40 transition flex flex-col justify-between"
+              className="group p-6 rounded-2xl bg-white border border-lucky-borderLight shadow-sm hover:shadow-md hover:border-lucky-magenta/50 transition flex flex-col justify-between"
             >
               <div>
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-xs font-mono text-lucky-mutedText font-semibold">
+                  <span className="text-xs font-mono text-lucky-magenta font-bold">
                     0{cat.sort_order}
                   </span>
-                  <ArrowUpRight className="w-4 h-4 text-lucky-mutedText group-hover:text-lucky-blue transition" />
+                  <ArrowUpRight className="w-4 h-4 text-lucky-mutedText group-hover:text-lucky-magenta transition" />
                 </div>
-                <h3 className="text-xl font-bold font-heading text-lucky-dark group-hover:text-lucky-blue transition">
+                <h3 className="text-xl font-bold font-heading text-lucky-dark group-hover:text-lucky-magenta transition">
                   {cat.name}
                 </h3>
                 <p className="text-xs text-lucky-mutedText mt-2 leading-relaxed">
@@ -237,7 +237,7 @@ export default async function HomePage() {
                 </p>
               </div>
               <div className="mt-6 flex items-center gap-2">
-                <span className="text-xs font-semibold text-lucky-dark group-hover:text-lucky-blue transition">
+                <span className="text-xs font-bold text-lucky-dark group-hover:text-lucky-magenta transition">
                   View Line
                 </span>
                 {cat.is_demo && <Badge variant="sample">Sample</Badge>}
@@ -259,7 +259,7 @@ export default async function HomePage() {
             </p>
           </div>
           <Button asChild variant="ghost" size="sm">
-            <Link href="/products" className="inline-flex items-center gap-1 font-semibold text-lucky-blue">
+            <Link href="/products" className="inline-flex items-center gap-1 font-bold text-lucky-magenta">
               View All Models <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
@@ -278,13 +278,13 @@ export default async function HomePage() {
                 />
                 <CardHeader className="p-5 pb-2">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[11px] font-semibold text-lucky-blue uppercase">
+                    <span className="text-[11px] font-bold text-lucky-magenta uppercase">
                       {p.category_name}
                     </span>
                     {p.is_demo && <Badge variant="sample">Sample</Badge>}
                   </div>
                   <CardTitle className="text-base leading-snug">
-                    <Link href={`/products/${p.slug}`} className="hover:text-lucky-blue transition">
+                    <Link href={`/products/${p.slug}`} className="hover:text-lucky-magenta transition">
                       {p.name}
                     </Link>
                   </CardTitle>
@@ -308,22 +308,22 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. Featured Portfolio / Completed Orders */}
+      {/* 5. Featured Portfolio / Completed Orders (#290044 & #500071 with #EEE3B0 text) */}
       <section className="bg-lucky-dark text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-12">
             <div>
-              <span className="text-xs uppercase font-bold tracking-wider text-lucky-blue">
+              <span className="text-xs uppercase font-bold tracking-wider text-lucky-cream">
                 Proven Delivery
               </span>
               <h2 className="text-3xl font-bold font-heading text-white mt-1">
                 Recent Completed Orders
               </h2>
-              <p className="text-sm text-slate-400 mt-1">
+              <p className="text-sm text-purple-200 mt-1">
                 Excellence demonstrated across corporate rollouts, sports tournaments, and enterprise uniform programs.
               </p>
             </div>
-            <Button asChild variant="outline" size="sm" className="border-slate-700 text-white hover:bg-slate-800">
+            <Button asChild variant="outline" size="sm" className="border-purple-800 text-lucky-cream hover:bg-lucky-darkCard">
               <Link href="/our-work">View All Work</Link>
             </Button>
           </div>
@@ -332,7 +332,7 @@ export default async function HomePage() {
             {displayProjects.map((proj) => (
               <div
                 key={proj.id}
-                className="rounded-2xl bg-lucky-darkCard border border-slate-800 overflow-hidden flex flex-col justify-between"
+                className="rounded-2xl bg-lucky-darkCard border border-purple-900/60 overflow-hidden flex flex-col justify-between"
               >
                 <div>
                   <OptimizedImage
@@ -343,20 +343,20 @@ export default async function HomePage() {
                     className="h-60 w-full object-cover"
                   />
                   <div className="p-6">
-                    <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
-                      <span>{proj.client_type || "Corporate Client"}</span>
+                    <div className="flex items-center justify-between text-xs text-lucky-cream mb-2">
+                      <span className="font-semibold">{proj.client_type || "Corporate Client"}</span>
                       {proj.is_demo && <Badge variant="sample">Sample</Badge>}
                     </div>
                     <h3 className="text-xl font-bold font-heading text-white mb-2">
                       {proj.title}
                     </h3>
-                    <p className="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                    <p className="text-xs text-purple-200 leading-relaxed line-clamp-3">
                       {proj.description}
                     </p>
                   </div>
                 </div>
                 <div className="p-6 pt-0">
-                  <Button asChild size="sm" variant="outline" className="w-full border-slate-700 text-white hover:bg-slate-800">
+                  <Button asChild size="sm" variant="outline" className="w-full border-purple-800 text-lucky-cream hover:bg-purple-900/40">
                     <Link href={`/our-work/${proj.slug}`}>Inspect Project Details</Link>
                   </Button>
                 </div>
@@ -369,7 +369,7 @@ export default async function HomePage() {
       {/* 6. Why Lucky Fashion Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="text-xs font-semibold uppercase tracking-wider text-lucky-blue">
+          <span className="text-xs font-bold uppercase tracking-wider text-lucky-magenta">
             Our Manufacturing Promise
           </span>
           <h2 className="text-3xl font-bold font-heading text-lucky-dark mt-1">
@@ -379,7 +379,9 @@ export default async function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="p-8 rounded-2xl bg-white border border-lucky-borderLight shadow-sm space-y-3">
-            <CheckCircle2 className="w-8 h-8 text-lucky-blue" />
+            <div className="w-12 h-12 rounded-xl bg-lucky-cream flex items-center justify-center text-lucky-magenta">
+              <CheckCircle2 className="w-6 h-6" />
+            </div>
             <h3 className="text-lg font-bold font-heading text-lucky-dark">No Broker Markups</h3>
             <p className="text-xs text-lucky-mutedText leading-relaxed">
               Deal directly with factory floor supervisors, pattern makers, and textile engineers. Clear pricing tiers and volume discounts.
@@ -387,7 +389,9 @@ export default async function HomePage() {
           </div>
 
           <div className="p-8 rounded-2xl bg-white border border-lucky-borderLight shadow-sm space-y-3">
-            <ShieldCheck className="w-8 h-8 text-lucky-blue" />
+            <div className="w-12 h-12 rounded-xl bg-lucky-cream flex items-center justify-center text-lucky-magenta">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
             <h3 className="text-lg font-bold font-heading text-lucky-dark">Pre-Production Approval</h3>
             <p className="text-xs text-lucky-mutedText leading-relaxed">
               We fabricate physical sample prototypes for your sign-off before commencing bulk fabric cutting and stitching.
@@ -395,7 +399,9 @@ export default async function HomePage() {
           </div>
 
           <div className="p-8 rounded-2xl bg-white border border-lucky-borderLight shadow-sm space-y-3">
-            <Factory className="w-8 h-8 text-lucky-blue" />
+            <div className="w-12 h-12 rounded-xl bg-lucky-cream flex items-center justify-center text-lucky-magenta">
+              <Factory className="w-6 h-6" />
+            </div>
             <h3 className="text-lg font-bold font-heading text-lucky-dark">Scalable Capacity</h3>
             <p className="text-xs text-lucky-mutedText leading-relaxed">
               Equipped to handle orders from initial batch runs to scheduled container freight for multi-location institutions.
@@ -404,18 +410,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 7. Request a Quote Banner */}
+      {/* 7. Request a Quote Banner (#290044 -> #500071 with #EEE3B0 gold button) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-lucky-blue p-8 sm:p-14 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-8 shadow-xl">
+        <div className="rounded-3xl bg-gradient-to-r from-lucky-dark to-lucky-darkCard p-8 sm:p-14 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-8 shadow-xl border border-purple-900/50">
           <div className="max-w-2xl">
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading tracking-tight mb-3">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading tracking-tight text-lucky-cream mb-3">
               Ready to Manufacture Your Custom Garments?
             </h2>
-            <p className="text-sm sm:text-base text-blue-100 leading-relaxed">
+            <p className="text-sm sm:text-base text-purple-200 leading-relaxed">
               Submit your required quantities, fabric preferences, and branding requirements through our quotation portal. Our technical team prepares formal specifications within 24 to 48 hours.
             </p>
           </div>
-          <Button asChild size="lg" className="bg-white text-lucky-blue hover:bg-slate-100 font-bold shrink-0">
+          <Button asChild size="lg" variant="secondary" className="font-bold text-lucky-dark shrink-0">
             <Link href="/quote">Request a Quote</Link>
           </Button>
         </div>

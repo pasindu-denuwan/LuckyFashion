@@ -4,23 +4,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lucky-blue focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lucky-magenta focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none",
   {
     variants: {
       variant: {
-        default: "bg-lucky-blue text-white shadow hover:bg-blue-700 active:bg-blue-800",
-        destructive: "bg-status-error text-white shadow-sm hover:bg-red-700 active:bg-red-800",
+        default: "bg-lucky-magenta text-white shadow-sm hover:bg-[#731f64] active:bg-[#5b174e]",
+        destructive: "bg-status-error text-white shadow-sm hover:bg-rose-700 active:bg-rose-800",
         outline:
-          "border border-lucky-borderLight bg-white hover:bg-lucky-lightNeutral text-lucky-dark dark:border-slate-700 dark:bg-lucky-dark dark:text-lucky-offwhite",
+          "border border-lucky-borderLight bg-white hover:bg-lucky-lightNeutral text-lucky-dark dark:border-purple-900/60 dark:bg-lucky-dark dark:text-lucky-cream",
         secondary:
-          "bg-lucky-lightNeutral text-lucky-dark hover:bg-slate-200 dark:bg-slate-800 dark:text-lucky-offwhite",
-        ghost: "hover:bg-lucky-lightNeutral text-lucky-dark hover:text-lucky-dark dark:text-lucky-offwhite",
-        link: "text-lucky-blue underline-offset-4 hover:underline",
+          "bg-lucky-cream text-lucky-dark font-bold hover:bg-[#e4d79b] active:bg-[#dacb88]",
+        ghost: "hover:bg-lucky-lightNeutral text-lucky-dark hover:text-lucky-magenta dark:text-lucky-cream",
+        link: "text-lucky-magenta underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3 text-xs",
-        lg: "h-12 rounded-lg px-8 text-base",
+        lg: "h-12 rounded-xl px-8 text-base",
         icon: "h-10 w-10",
       },
     },
@@ -52,4 +52,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
-

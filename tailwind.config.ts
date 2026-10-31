@@ -23,13 +23,18 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         lucky: {
-          dark: "#17191D",
-          darkCard: "#242830",
-          offwhite: "#F8F8F6",
-          blue: "#2563EB",
-          lightNeutral: "#ECEEF1",
-          mutedText: "#6B7280",
-          borderLight: "#E5E7EB",
+          dark: "#290044",        // Primary Deep Royal Plum
+          darkCard: "#500071",    // Rich Violet Card/Section
+          plum: "#290044",        // #290044
+          violet: "#500071",      // #500071
+          magenta: "#8A2A78",     // #8A2A78 Vibrant Berry Magenta
+          cream: "#EEE3B0",       // #EEE3B0 Warm Cream Gold
+          blue: "#8A2A78",        // Seamlessly remaps primary accent to #8A2A78
+          primary: "#8A2A78",     // Primary action
+          offwhite: "#FAF7EE",    // Soft warm cream background
+          lightNeutral: "#F5EFD7",// Cream accent surface
+          mutedText: "#6E5B70",   // Elegant muted plum
+          borderLight: "#E5DBBF", // Soft cream border
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -61,9 +66,9 @@ const config: Config = {
         },
         status: {
           success: "#10B981",
-          warning: "#F59E0B",
-          error: "#EF4444",
-          info: "#3B82F6",
+          warning: "#D97706",
+          error: "#E11D48",
+          info: "#8A2A78",
         },
       },
       borderRadius: {
@@ -95,4 +100,3 @@ const config: Config = {
 };
 
 export default config;
-

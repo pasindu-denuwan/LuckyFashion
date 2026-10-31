@@ -248,9 +248,9 @@ export function QuotationWizard({
                   onClick={() => setCurrentStep(s.number)}
                   className={`flex flex-col items-center text-center p-2 rounded-xl transition ${
                     isCurrent
-                      ? "bg-lucky-blue text-white shadow-sm font-semibold"
+                      ? "bg-lucky-magenta text-white shadow-sm font-bold"
                       : isDone
-                      ? "text-emerald-700 bg-emerald-50 hover:bg-emerald-100"
+                      ? "text-lucky-dark bg-lucky-cream font-semibold hover:bg-[#e4d79b]"
                       : "text-lucky-mutedText hover:bg-slate-50"
                   }`}
                 >
@@ -705,7 +705,7 @@ export function QuotationWizard({
                 <Button
                   onClick={handleSubmit}
                   disabled={submitting}
-                  className="bg-lucky-blue hover:bg-blue-700 font-bold px-8"
+                  className="bg-lucky-magenta hover:bg-[#731f64] text-white font-bold px-8 shadow-sm"
                 >
                   {submitting ? "Writing to Database..." : "Submit Quotation Request"}
                 </Button>
