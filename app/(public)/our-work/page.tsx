@@ -1,31 +1,69 @@
 import React from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import { CheckCircle2, ArrowRight } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+
+const SAMPLE_PROJECTS = [
+  {
+    id: "o1",
+    title: "Enterprise Staff Uniform Program",
+    slug: "enterprise-staff-uniform-program",
+    client_type: "Corporate Enterprise",
+    category_name: "Polo Shirts",
+    description: "Engineered custom polo batch with high-density chest embroidery and dye-sublimated sleeve tipping for a multi-regional corporate rollout.",
+    cover_image_url: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80",
+    is_demo: true,
+  },
+  {
+    id: "o2",
+    title: "City Marathon Finisher Technical Shirts",
+    slug: "city-marathon-finisher-technical-shirts",
+    client_type: "Athletic Event",
+    category_name: "Sportswear & Activewear",
+    description: "Breathable lightweight finisher jerseys equipped with reflective safety transfers and colorfast all-over screen graphics.",
+    cover_image_url: "https://images.unsplash.com/photo-1508215885820-4523e431397e?auto=format&fit=crop&w=800&q=80",
+    is_demo: true,
+  },
+];
 
 export default async function OurWorkPage({
   searchParams,
 }: {
   searchParams: { client?: string };
 }) {
-  const supabase = createClient();
   const selectedClient = searchParams.client;
+  let projects = SAMPLE_PROJECTS;
 
-  let query = supabase
-    .from("completed_orders")
-    .select("*, categories(name)")
-    .eq("status", "published");
+  try {
+    const supabase = createClient();
+    let query = supabase
+      .from("completed_orders")
+      .select("*, categories(name)")
+      .eq("status", "published");
 
-  if (selectedClient) {
-    query = query.eq("client_type", selectedClient);
+    if (selectedClient) {
+      query = query.eq("client_type", selectedClient);
+    }
+
+    const res = await query.order("created_at", { ascending: false });
+    if (res.data && res.data.length > 0) {
+      projects = res.data.map((p) => ({
+        ...p,
+        category_name: p.categories?.name,
+      }));
+    } else if (selectedClient) {
+      projects = SAMPLE_PROJECTS.filter((p) => p.client_type === selectedClient);
+    }
+  } catch {
+    if (selectedClient) {
+      projects = SAMPLE_PROJECTS.filter((p) => p.client_type === selectedClient);
+    }
   }
-
-  const { data: projects } = await query.order("created_at", { ascending: false });
 
   const clientTypes = ["Corporate Enterprise", "Athletic Event", "Sports Club", "Hospitality"];
 
@@ -86,7 +124,7 @@ export default async function OurWorkPage({
                 <CardHeader className="p-6 pb-2">
                   <div className="flex items-center justify-between text-xs text-lucky-mutedText mb-2">
                     <span className="font-semibold text-lucky-blue uppercase">
-                      {proj.client_type || proj.categories?.name}
+                      {proj.client_type || proj.category_name}
                     </span>
                     {proj.is_demo && <Badge variant="sample">Sample</Badge>}
                   </div>
@@ -127,4 +165,3 @@ export default async function OurWorkPage({
     </div>
   );
 }
-

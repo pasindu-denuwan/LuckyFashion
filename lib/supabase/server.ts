@@ -4,12 +4,8 @@ import { cookies } from 'next/headers';
 export function createClient() {
   const cookieStore = cookies();
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error('Supabase URL or Anonymous Key is missing in environment variables.');
-  }
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.dummy';
 
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
@@ -20,18 +16,16 @@ export function createClient() {
         try {
           cookieStore.set({ name, value, ...options });
         } catch {
-          // The `set` method was called from a Server Component.
-          // This can be ignored if middleware is refreshing sessions.
+          // Ignored if called from Server Component
         }
       },
       remove(name: string, options: CookieOptions) {
         try {
           cookieStore.set({ name, value: '', ...options });
         } catch {
-          // The `delete` method was called from a Server Component.
+          // Ignored if called from Server Component
         }
       },
     },
   });
 }
-

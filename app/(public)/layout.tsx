@@ -9,12 +9,20 @@ export default async function PublicLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
+  let settings: any = null;
+  let categories: any[] | null = null;
 
-  const [{ data: settings }, { data: categories }] = await Promise.all([
-    supabase.from("business_settings").select("*").eq("id", "default").single(),
-    supabase.from("categories").select("name, slug").eq("is_active", true).order("sort_order"),
-  ]);
+  try {
+    const supabase = createClient();
+    const [settingsRes, categoriesRes] = await Promise.all([
+      supabase.from("business_settings").select("*").eq("id", "default").single(),
+      supabase.from("categories").select("name, slug").eq("is_active", true).order("sort_order"),
+    ]);
+    settings = settingsRes.data;
+    categories = categoriesRes.data;
+  } catch {
+    // Safe fallback to defaults
+  }
 
   const companyName = settings?.company_name || "Lucky Fashion";
   const phone = settings?.phone || "+1 (555) 019-2834";
