@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { generateSlug, formatQuotationReference } from '../lib/slug';
 import { productSchema } from '../lib/validators/product';
 import { completedOrderSchema } from '../lib/validators/completed-order';
-import { quotationStep1Schema, quotationStep3ContactSchema } from '../lib/validators/quote';
+import { quotationStep1Schema } from '../lib/validators/quote';
 import { contactMessageSchema } from '../lib/validators/contact';
 
 describe('Quotation Reference Number Formatter', () => {
