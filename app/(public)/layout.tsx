@@ -2,7 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MapPin, ArrowRight, MessageSquare } from "lucide-react";
+import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
+import { PublicHeader } from "@/components/public/public-header";
 
 export default async function PublicLayout({
   children,
@@ -32,56 +33,12 @@ export default async function PublicLayout({
 
   return (
     <div className="min-h-screen flex flex-col bg-lucky-offwhite text-lucky-dark">
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-lucky-borderLight">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold font-heading tracking-tight text-lucky-dark">
-              {companyName}
-            </span>
-            <span className="hidden sm:inline-block text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-lucky-cream text-lucky-dark border border-lucky-borderLight">
-              Manufacturing
-            </span>
-          </Link>
-
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-lucky-dark">
-            <Link href="/products" className="hover:text-lucky-magenta transition">
-              Products
-            </Link>
-            <Link href="/our-work" className="hover:text-lucky-magenta transition">
-              Our Work
-            </Link>
-            <Link href="/manufacturing" className="hover:text-lucky-magenta transition">
-              Manufacturing & FAQs
-            </Link>
-            <Link href="/about" className="hover:text-lucky-magenta transition">
-              About
-            </Link>
-            <Link href="/contact" className="hover:text-lucky-magenta transition">
-              Contact
-            </Link>
-          </nav>
-
-          {/* Header Actions */}
-          <div className="flex items-center gap-4">
-            {whatsapp && (
-              <a
-                href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden lg:inline-flex items-center gap-1.5 text-xs font-bold text-lucky-dark bg-lucky-cream px-3.5 py-1.5 rounded-full border border-lucky-borderLight hover:bg-[#e4d79b] transition"
-              >
-                <MessageSquare className="w-3.5 h-3.5 text-lucky-magenta" />
-                <span>WhatsApp</span>
-              </a>
-            )}
-            <Button asChild variant="default" size="sm">
-              <Link href="/quote">Request a Quote</Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+      {/* Sticky Header with Mobile Navigation */}
+      <PublicHeader
+        companyName={companyName}
+        whatsapp={whatsapp}
+        categories={categories}
+      />
 
       {/* Main Public Page Content */}
       <div className="flex-1">{children}</div>
