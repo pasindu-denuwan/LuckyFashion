@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from "next/link";
 import { LucideIcon, PackageOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ interface EmptyStateProps {
   description: string;
   icon?: LucideIcon;
   actionLabel?: string;
+  actionHref?: string;
   onAction?: () => void;
   className?: string;
 }
@@ -17,6 +19,7 @@ export function EmptyState({
   description,
   icon: Icon = PackageOpen,
   actionLabel,
+  actionHref,
   onAction,
   className,
 }: EmptyStateProps) {
@@ -36,7 +39,12 @@ export function EmptyState({
       <p className="text-sm text-lucky-mutedText max-w-sm mb-6">
         {description}
       </p>
-      {actionLabel && onAction && (
+      {actionLabel && actionHref && (
+        <Button asChild variant="default" size="sm">
+          <Link href={actionHref}>{actionLabel}</Link>
+        </Button>
+      )}
+      {actionLabel && !actionHref && onAction && (
         <Button onClick={onAction} variant="default" size="sm">
           {actionLabel}
         </Button>

@@ -1,33 +1,45 @@
 import React from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Sparkles, ArrowRight, ArrowUpRight, Filter } from "lucide-react";
 
 const SAMPLE_PROJECTS = [
   {
     id: "o1",
-    title: "Enterprise Staff Uniform Program",
-    slug: "enterprise-staff-uniform-program",
+    title: "National Multi-City Staff Uniform Rollout",
+    slug: "national-staff-uniform-rollout",
     client_type: "Corporate Enterprise",
-    category_name: "Polo Shirts",
-    description: "Engineered custom polo batch with high-density chest embroidery and dye-sublimated sleeve tipping for a multi-regional corporate rollout.",
+    batch_size: "3,200 Garments",
+    description: "Custom-dyed pique polo shirts with 12,000-stitch high-density corporate chest embroidery and dye-matched sleeve tipping.",
     cover_image_url: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80",
     is_demo: true,
+    specs: ["Custom Pantone Dye", "Tajima Embroidery", "Individual Polybagging"],
   },
   {
     id: "o2",
-    title: "City Marathon Finisher Technical Shirts",
-    slug: "city-marathon-finisher-technical-shirts",
+    title: "Metropolitan Marathon Finisher Tech Kits",
+    slug: "metropolitan-marathon-finisher-tech-kits",
     client_type: "Athletic Event",
-    category_name: "Sportswear & Activewear",
-    description: "Breathable lightweight finisher jerseys equipped with reflective safety transfers and colorfast all-over screen graphics.",
+    batch_size: "8,500 Garments",
+    description: "Ultra-breathable 150 GSM moisture-wicking jerseys with reflective safety heat transfers and soft-hand sublimation side panels.",
     cover_image_url: "https://images.unsplash.com/photo-1508215885820-4523e431397e?auto=format&fit=crop&w=800&q=80",
     is_demo: true,
+    specs: ["Moisture-Wicking Interlock", "Reflective 3M Transfers", "AQL 2.5 Audit"],
+  },
+  {
+    id: "o3",
+    title: "Streetwear Label Heavyweight Drop",
+    slug: "streetwear-label-heavyweight-drop",
+    client_type: "Private Fashion Brand",
+    batch_size: "1,200 Garments",
+    description: "240 GSM oversized boxy crewneck t-shirts paired with 380 GSM brushed fleece hoodies featuring water-based discharge prints and custom damask neck labels.",
+    cover_image_url: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80",
+    is_demo: true,
+    specs: ["240 GSM Boxy Tee", "Discharge Screen Print", "Custom Woven Neck Labels"],
   },
 ];
 
@@ -54,7 +66,7 @@ export default async function OurWorkPage({
     if (res.data && res.data.length > 0) {
       projects = res.data.map((p) => ({
         ...p,
-        category_name: p.categories?.name,
+        specs: ["Custom Mill Dyeing", "Precision Embellishment", "AQL 2.5 Quality Control"],
       }));
     } else if (selectedClient) {
       projects = SAMPLE_PROJECTS.filter((p) => p.client_type === selectedClient);
@@ -65,94 +77,129 @@ export default async function OurWorkPage({
     }
   }
 
-  const clientTypes = ["Corporate Enterprise", "Athletic Event", "Sports Club", "Hospitality"];
+  const clientTypes = ["Corporate Enterprise", "Athletic Event", "Private Fashion Brand", "Hospitality"];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold font-heading text-lucky-dark">
-          Our Work & Production Portfolio
-        </h1>
-        <p className="text-sm text-lucky-mutedText mt-2 max-w-2xl">
-          Real production runs manufactured for corporations, athletic teams, and event organizers.
-        </p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+      {/* Editorial Header */}
+      <div className="rounded-3xl bg-gradient-to-r from-lucky-dark to-lucky-darkCard p-8 sm:p-12 text-white relative overflow-hidden shadow-lg border border-purple-900/60">
+        <div className="max-w-2xl relative z-10 space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-lucky-cream/20 text-lucky-cream text-xs font-bold border border-lucky-cream/30">
+            <Sparkles className="w-3.5 h-3.5 text-lucky-cream" />
+            <span>Proven Delivery & Case Studies</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-black font-heading text-white tracking-tight leading-tight">
+            Our Work & Completed Production Runs
+          </h1>
+          <p className="text-sm sm:text-base text-purple-200 leading-relaxed">
+            Explore verified garment batches fabricated for retail fashion collections, corporate uniform fleets, and athletic tournaments. Every project demonstrates factory-floor excellence.
+          </p>
+        </div>
+
+        {/* Ambient Glow */}
+        <div className="absolute right-0 top-0 w-80 h-80 bg-lucky-magenta/20 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* Client Type Filter Pills */}
-      <div className="flex flex-wrap gap-2 border-b border-lucky-borderLight pb-4">
-        <Link
-          href="/our-work"
-          className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition ${
-            !selectedClient
-              ? "bg-lucky-dark text-white"
-              : "bg-white text-lucky-dark border border-lucky-borderLight hover:bg-slate-50"
-          }`}
-        >
-          All Projects
-        </Link>
-        {clientTypes.map((client) => (
+      {/* Filter Bar */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <Filter className="w-4 h-4 text-lucky-magenta" />
+          <span className="text-xs uppercase font-bold tracking-wider text-lucky-mutedText">
+            Filter by Client Sector
+          </span>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
           <Link
-            key={client}
-            href={`/our-work?client=${encodeURIComponent(client)}`}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition ${
-              selectedClient === client
-                ? "bg-lucky-dark text-white"
-                : "bg-white text-lucky-dark border border-lucky-borderLight hover:bg-slate-50"
+            href="/our-work"
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              !selectedClient
+                ? "bg-lucky-dark text-lucky-cream shadow-xs"
+                : "bg-white text-lucky-dark border border-lucky-borderLight hover:bg-lucky-lightNeutral"
             }`}
           >
-            {client}
+            All Projects
           </Link>
-        ))}
+          {clientTypes.map((client) => (
+            <Link
+              key={client}
+              href={`/our-work?client=${encodeURIComponent(client)}`}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                selectedClient === client
+                  ? "bg-lucky-dark text-lucky-cream shadow-xs"
+                  : "bg-white text-lucky-dark border border-lucky-borderLight hover:bg-lucky-lightNeutral"
+              }`}
+            >
+              {client}
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* Projects Grid */}
       {projects && projects.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((proj) => (
-            <Card
+            <div
               key={proj.id}
-              className="flex flex-col justify-between overflow-hidden hover:shadow-md transition"
+              className="group rounded-2xl bg-white border border-lucky-borderLight shadow-sm hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden"
             >
               <div>
-                <OptimizedImage
-                  src={proj.cover_image_url || ""}
-                  alt={proj.title}
-                  width={500}
-                  height={320}
-                  className="h-56 w-full object-cover"
-                />
-                <CardHeader className="p-6 pb-2">
-                  <div className="flex items-center justify-between text-xs text-lucky-mutedText mb-2">
-                    <span className="font-semibold text-lucky-blue uppercase">
-                      {proj.client_type || proj.category_name}
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-lucky-lightNeutral/40">
+                  <OptimizedImage
+                    src={proj.cover_image_url || ""}
+                    alt={proj.title}
+                    width={500}
+                    height={320}
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 left-3">
+                    <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md bg-white/95 text-lucky-magenta border border-lucky-borderLight shadow-xs">
+                      {proj.client_type}
                     </span>
-                    {proj.is_demo && <Badge variant="sample">Sample</Badge>}
                   </div>
-                  <CardTitle className="text-lg font-bold">
-                    <Link
-                      href={`/our-work/${proj.slug}`}
-                      className="hover:text-lucky-blue transition"
-                    >
-                      {proj.title}
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="text-xs line-clamp-3 mt-2 leading-relaxed">
+                  {proj.is_demo && (
+                    <div className="absolute top-3 right-3">
+                      <Badge variant="sample" className="bg-white/95">
+                        Sample
+                      </Badge>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-6">
+                  <h3 className="font-heading font-bold text-lg text-lucky-dark group-hover:text-lucky-magenta transition-colors line-clamp-1">
+                    <Link href={`/our-work/${proj.slug}`}>{proj.title}</Link>
+                  </h3>
+                  <p className="text-xs text-lucky-mutedText mt-2 line-clamp-3 leading-relaxed">
                     {proj.description}
-                  </CardDescription>
-                </CardHeader>
+                  </p>
+
+                  <div className="mt-4 pt-3 border-t border-lucky-borderLight/80 flex flex-wrap gap-1.5">
+                    {proj.specs?.map((s: string) => (
+                      <span
+                        key={s}
+                        className="text-[10px] font-semibold text-lucky-dark bg-lucky-cream/60 px-2 py-0.5 rounded border border-lucky-borderLight"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <div className="p-6 pt-4 border-t border-lucky-borderLight flex items-center justify-between">
-                <Button asChild size="sm" variant="outline">
+              {/* Action Buttons */}
+              <div className="p-6 pt-0 border-t border-lucky-borderLight/80 flex items-center justify-between gap-3 mt-4">
+                <Button asChild size="sm" variant="outline" className="w-1/2">
                   <Link href={`/our-work/${proj.slug}`}>Case Study</Link>
                 </Button>
-                <Button asChild size="sm" variant="default">
+                <Button asChild size="sm" variant="default" className="w-1/2 shadow-xs">
                   <Link href={`/quote?project=${proj.slug}`}>
                     Request Quote Similar
                   </Link>
                 </Button>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       ) : (
@@ -160,6 +207,8 @@ export default async function OurWorkPage({
           title="No Portfolio Items Found"
           description="There are currently no published projects matching the selected category."
           icon={CheckCircle2}
+          actionLabel="Show All Projects"
+          actionHref="/our-work"
         />
       )}
     </div>

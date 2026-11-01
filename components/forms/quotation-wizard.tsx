@@ -23,31 +23,102 @@ interface QuotationWizardProps {
   availableMaterials: string[];
   prefilledProduct?: { name: string; slug: string } | null;
   prefilledProject?: { title: string; slug: string } | null;
+  initialConfig?: {
+    category?: string;
+    volume?: string;
+    technique?: string;
+    fabric?: string;
+    vertical?: string;
+  } | null;
 }
 
 export function QuotationWizard({
   availableMaterials,
   prefilledProduct,
   prefilledProject,
+  initialConfig,
 }: QuotationWizardProps) {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const getInitialItemName = () => {
+    if (prefilledProduct) return prefilledProduct.name;
+    if (prefilledProject) return `Custom Garment (${prefilledProject.title})`;
+    if (initialConfig?.category) {
+      const catMap: Record<string, string> = {
+        "t-shirts": "Custom Combed Cotton T-Shirt",
+        "polo-shirts": "Custom Honeycomb Pique Polo",
+        "hoodies-sweatshirts": "Heavyweight Brushed Fleece Hoodie",
+        "corporate-uniforms": "Custom Corporate Staff Uniform",
+        "sportswear-activewear": "Dry-Fit Athletic Performance Tee",
+        "caps-headwear": "Structured Cotton Twill Cap",
+      };
+      return catMap[initialConfig.category] || "Custom Apparel Blank";
+    }
+    return "Custom Crewneck T-Shirt";
+  };
+
+  const getInitialQuantity = () => {
+    if (initialConfig?.volume) {
+      if (initialConfig.volume === "50-150") return 100;
+      if (initialConfig.volume === "151-500") return 300;
+      if (initialConfig.volume === "501-1500") return 1000;
+      if (initialConfig.volume === "1500+") return 2500;
+      const parsed = parseInt(initialConfig.volume, 10);
+      if (!isNaN(parsed) && parsed > 0) return parsed;
+    }
+    return 100;
+  };
+
+  const getInitialMaterial = () => {
+    if (initialConfig?.fabric) {
+      const fabMap: Record<string, string> = {
+        "combed-cotton": "100% Combed Cotton",
+        "pique-knit": "Pique Cotton",
+        "brushed-fleece": "Heavyweight Fleece",
+        "dry-fit-interlock": "Dry-Fit Polyester",
+      };
+      const mapped = fabMap[initialConfig.fabric];
+      if (mapped) return mapped;
+    }
+    return availableMaterials[0] || "100% Combed Cotton";
+  };
+
+  const getInitialCustomization = () => {
+    if (initialConfig?.technique) {
+      const techMap: Record<string, string> = {
+        embroidery: "3D High-Density & Flat Tajima Embroidery",
+        "screen-print": "Water-Based Discharge / Stretch Plastisol Screen Print",
+        "dtf-silicone": "Direct-to-Film (DTF) & Raised Silicone Transfers",
+        "cut-sew-plain": "Custom Cut & Sew with Woven Damask Relabeling",
+      };
+      return techMap[initialConfig.technique] || "";
+    }
+    return "";
+  };
+
+  const initialQty = getInitialQuantity();
   const defaultItem = {
-    item_name: prefilledProduct ? prefilledProduct.name : prefilledProject ? `Custom Garment (${prefilledProject.title})` : "Custom Crewneck T-Shirt",
-    quantity: 100,
-    material: availableMaterials[0] || "100% Combed Cotton",
-    sizes_breakdown: { S: 25, M: 50, L: 25 } as Record<string, number>,
-    customization_details: "",
+    item_name: getInitialItemName(),
+    quantity: initialQty,
+    material: getInitialMaterial(),
+    sizes_breakdown: {
+      S: Math.round(initialQty * 0.25),
+      M: Math.round(initialQty * 0.5),
+      L: Math.round(initialQty * 0.25),
+    } as Record<string, number>,
+    customization_details: getInitialCustomization(),
   };
 
   const [formData, setFormData] = useState({
     items: [defaultItem],
     delivery_timeline: "Standard (3-4 weeks)",
     delivery_address: "",
-    additional_notes: "",
+    additional_notes: initialConfig?.vertical
+      ? `Sector / Client Vertical: ${initialConfig.vertical}`
+      : "",
     contact_name: "",
     company_name: "",
     email: "",
@@ -61,8 +132,17 @@ export function QuotationWizard({
     }>,
   });
 
-  // Local storage persistence
+  // Local storage persistence (only if not prefilling from explicit URL parameters)
   useEffect(() => {
+    if (
+      prefilledProduct ||
+      prefilledProject ||
+      initialConfig?.category ||
+      initialConfig?.technique ||
+      initialConfig?.volume
+    ) {
+      return;
+    }
     try {
       const saved = localStorage.getItem("lucky_quote_draft");
       if (saved) {
@@ -72,7 +152,7 @@ export function QuotationWizard({
     } catch {
       // Ignore local storage errors
     }
-  }, []);
+  }, [prefilledProduct, prefilledProject, initialConfig]);
 
   const saveToLocalStorage = (data: typeof formData) => {
     try {

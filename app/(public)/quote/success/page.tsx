@@ -46,7 +46,7 @@ export default function QuotationSuccessPage({ searchParams }: SuccessPageProps)
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-mono font-bold text-lucky-blue py-2">
+          <div className="text-3xl font-mono font-black text-lucky-magenta py-2">
             {referenceNumber}
           </div>
           <p className="text-xs text-lucky-mutedText mt-1">

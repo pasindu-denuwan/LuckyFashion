@@ -6,8 +6,16 @@ import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { OptimizedImage } from "@/components/ui/optimized-image";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Check, Layers, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ShieldCheck,
+  Layers,
+  Sparkles,
+  CheckCircle2,
+  Clock,
+  Printer,
+} from "lucide-react";
 
 interface Props {
   params: { slug: string };
@@ -49,7 +57,7 @@ export default async function ProductDetailPage({ params }: Props) {
   // Fetch related products from the same category
   const { data: relatedProducts } = await supabase
     .from("products")
-    .select("id, name, slug, cover_image_url, is_demo")
+    .select("id, name, slug, cover_image_url, is_demo, weight_gsm")
     .eq("category_id", product.category_id)
     .eq("status", "published")
     .neq("id", product.id)
@@ -61,24 +69,32 @@ export default async function ProductDetailPage({ params }: Props) {
       <div>
         <Link
           href="/products"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-lucky-mutedText hover:text-lucky-blue transition mb-4"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-lucky-mutedText hover:text-lucky-magenta transition mb-4"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to Products Catalog
         </Link>
       </div>
 
       {/* Main Product Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        {/* Left Column: Visual Showcase */}
-        <div className="space-y-4">
-          <div className="rounded-2xl overflow-hidden border border-lucky-borderLight bg-white shadow-sm">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        {/* Left Column: Visual Showcase (7 cols) */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className="rounded-3xl overflow-hidden border border-lucky-borderLight bg-white shadow-sm relative">
             <OptimizedImage
               src={product.cover_image_url || ""}
               alt={product.name}
               width={800}
               height={600}
-              className="w-full h-[450px] object-cover"
+              className="w-full h-[480px] object-cover"
+              priority
             />
+            {product.is_demo && (
+              <div className="absolute top-4 right-4">
+                <Badge variant="sample" className="bg-white/95 shadow-xs">
+                  Sample
+                </Badge>
+              </div>
+            )}
           </div>
 
           {/* Product Gallery Images (if any) */}
@@ -102,14 +118,13 @@ export default async function ProductDetailPage({ params }: Props) {
           )}
         </div>
 
-        {/* Right Column: Garment Specifications & Actions */}
-        <div className="space-y-6">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-semibold uppercase text-lucky-blue">
-                {product.categories?.name}
+        {/* Right Column: Garment Specifications & Actions (5 cols) */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-lucky-magenta">
+                {product.categories?.name || "Apparel"}
               </span>
-              {product.is_demo && <Badge variant="sample">Sample</Badge>}
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold font-heading text-lucky-dark">
               {product.name}
@@ -120,72 +135,87 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.description}
           </p>
 
-          {/* Fabric Details */}
-          {product.fabric_details && (
-            <div className="p-4 rounded-xl bg-lucky-lightNeutral/50 border border-lucky-borderLight space-y-1">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase text-lucky-dark">
-                <Layers className="w-4 h-4 text-lucky-blue" />
-                <span>Fabric Composition & Weave</span>
-              </div>
-              <p className="text-xs text-lucky-mutedText leading-relaxed">
-                {product.fabric_details}
-              </p>
+          {/* Technical Specs Card */}
+          <div className="p-5 rounded-2xl bg-white border border-lucky-borderLight shadow-xs space-y-4 text-xs">
+            <div className="flex items-center gap-2 font-bold uppercase tracking-wider text-lucky-dark pb-2 border-b border-lucky-borderLight">
+              <Layers className="w-4 h-4 text-lucky-magenta" />
+              <span>Garment Specifications</span>
             </div>
-          )}
 
-          {/* Available Sizes */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <span className="text-[10px] uppercase font-bold text-lucky-mutedText block">
+                  Fabric Weight
+                </span>
+                <span className="font-bold text-lucky-dark text-sm">
+                  {product.weight_gsm ? `${product.weight_gsm} GSM` : "180 - 240 GSM"}
+                </span>
+              </div>
+              <div>
+                <span className="text-[10px] uppercase font-bold text-lucky-mutedText block">
+                  Composition
+                </span>
+                <span className="font-bold text-lucky-dark text-sm">
+                  {product.fabric_blend || "100% Ring-Spun Cotton"}
+                </span>
+              </div>
+            </div>
+
+            {product.fabric_details && (
+              <div className="pt-2 border-t border-lucky-borderLight/80">
+                <span className="text-[10px] uppercase font-bold text-lucky-mutedText block mb-1">
+                  Weave & Finish
+                </span>
+                <p className="text-lucky-mutedText leading-relaxed">
+                  {product.fabric_details}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Sizing Matrix */}
           {product.available_sizes && product.available_sizes.length > 0 && (
             <div>
               <span className="block text-xs font-bold uppercase tracking-wider text-lucky-dark mb-2">
-                Standard Size Matrix
+                Available Size Run
               </span>
               <div className="flex flex-wrap gap-2">
                 {product.available_sizes.map((size: string) => (
                   <span
                     key={size}
-                    className="px-3 py-1.5 rounded-lg border border-lucky-borderLight bg-white text-xs font-mono font-medium text-lucky-dark"
+                    className="px-3 py-1.5 rounded-lg border border-lucky-borderLight bg-white text-xs font-mono font-bold text-lucky-dark"
                   >
                     {size}
                   </span>
                 ))}
               </div>
               <p className="text-[11px] text-lucky-mutedText mt-1.5">
-                Custom grading and oversize specs accommodated upon request.
+                Custom sizing grading, oversized fits, and extended sizes accommodated on request.
               </p>
             </div>
           )}
 
-          {/* Available Colorways */}
-          {product.available_colors && product.available_colors.length > 0 && (
-            <div>
-              <span className="block text-xs font-bold uppercase tracking-wider text-lucky-dark mb-2">
-                Sample Dye Colorways
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {product.available_colors.map((color: string) => (
-                  <span
-                    key={color}
-                    className="px-3 py-1 rounded-full border border-lucky-borderLight bg-white text-xs text-lucky-dark"
-                  >
-                    {color}
-                  </span>
-                ))}
-              </div>
-              <p className="text-[11px] text-lucky-mutedText mt-1.5">
-                Pantone matching system (PMS) dyeing available for custom orders.
-              </p>
+          {/* Production Reassurance Callout */}
+          <div className="p-4 rounded-xl bg-lucky-cream/40 border border-lucky-borderLight space-y-2 text-xs">
+            <div className="flex items-center gap-2 font-bold text-lucky-dark">
+              <ShieldCheck className="w-4 h-4 text-lucky-magenta shrink-0" />
+              <span>Pre-Production Sample Sign-Off</span>
             </div>
-          )}
+            <p className="text-lucky-mutedText text-[11px] leading-relaxed">
+              We fabricate a complete physical prototype for your hands-on touch, fit, and color approval before commencing bulk cutting.
+            </p>
+          </div>
 
           {/* Primary CTA Box */}
-          <div className="pt-6 border-t border-lucky-borderLight space-y-3">
-            <Button asChild size="lg" className="w-full text-base font-bold">
-              <Link href={`/quote?product=${product.slug}`}>
-                Request a Quote for this Garment
+          <div className="pt-4 border-t border-lucky-borderLight space-y-3">
+            <Button asChild size="lg" variant="default" className="w-full text-base font-bold shadow-md">
+              <Link href={`/quote?product=${product.slug}`} className="flex items-center justify-center gap-2">
+                <span>Request a Quote for this Garment</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
             <p className="text-[11px] text-lucky-mutedText text-center">
-              Quotes include pricing estimates, sample options, and turnaround timelines. No obligation.
+              Our technical desk prepares formal specifications within 24 to 48 hours.
             </p>
           </div>
         </div>
@@ -194,30 +224,52 @@ export default async function ProductDetailPage({ params }: Props) {
       {/* Related Products */}
       {relatedProducts && relatedProducts.length > 0 && (
         <section className="pt-12 border-t border-lucky-borderLight">
-          <h3 className="text-xl font-bold font-heading text-lucky-dark mb-6">
-            Related Models in {product.categories?.name}
-          </h3>
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl font-bold font-heading text-lucky-dark">
+              Related Silhouettes in {product.categories?.name}
+            </h3>
+            <Button asChild variant="ghost" size="sm">
+              <Link href={`/products?category=${product.categories?.slug}`} className="text-xs font-bold text-lucky-magenta">
+                View All <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              </Link>
+            </Button>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {relatedProducts.map((rel) => (
-              <Card key={rel.id} className="overflow-hidden hover:shadow-sm transition">
-                <OptimizedImage
-                  src={rel.cover_image_url || ""}
-                  alt={rel.name}
-                  width={300}
-                  height={200}
-                  className="h-44 w-full object-cover"
-                />
-                <CardHeader className="p-4">
-                  <div className="flex justify-between items-center mb-1">
-                    <CardTitle className="text-sm font-bold">
-                      <Link href={`/products/${rel.slug}`} className="hover:text-lucky-blue">
-                        {rel.name}
-                      </Link>
-                    </CardTitle>
-                    {rel.is_demo && <Badge variant="sample">Sample</Badge>}
+              <div
+                key={rel.id}
+                className="group rounded-2xl bg-white border border-lucky-borderLight overflow-hidden hover:shadow-md transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-lucky-lightNeutral/40">
+                    <OptimizedImage
+                      src={rel.cover_image_url || ""}
+                      alt={rel.name}
+                      width={300}
+                      height={220}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {rel.is_demo && (
+                      <div className="absolute top-2 right-2">
+                        <Badge variant="sample" className="bg-white/95">
+                          Sample
+                        </Badge>
+                      </div>
+                    )}
                   </div>
-                </CardHeader>
-              </Card>
+                  <div className="p-4">
+                    <h4 className="font-heading font-bold text-sm text-lucky-dark group-hover:text-lucky-magenta transition-colors line-clamp-1">
+                      <Link href={`/products/${rel.slug}`}>{rel.name}</Link>
+                    </h4>
+                  </div>
+                </div>
+                <div className="p-4 pt-0 flex items-center justify-between">
+                  <Button asChild size="sm" variant="outline" className="w-full">
+                    <Link href={`/products/${rel.slug}`}>View Spec</Link>
+                  </Button>
+                </div>
+              </div>
             ))}
           </div>
         </section>
@@ -225,4 +277,3 @@ export default async function ProductDetailPage({ params }: Props) {
     </div>
   );
 }
-
