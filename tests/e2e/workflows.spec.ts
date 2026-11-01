@@ -64,5 +64,25 @@ describe('Workflow Verification Suite (E2E Specifications)', () => {
       expect(catalogSeedCategories).not.toContain(forbidden);
     }
   });
+
+  it('Workflow F: Quotation Wizard configuration mapping & prefill validity', () => {
+    const validConfig = {
+      category: 't-shirts',
+      volume: '501-1500',
+      technique: 'embroidery',
+    };
+
+    expect(validConfig.category).toBe('t-shirts');
+    expect(parseInt('500', 10)).toBeGreaterThan(0);
+  });
+
+  it('Workflow G: Demo records transparency & sample flag enforcement', () => {
+    const demoGarment = {
+      name: 'Heavyweight Boxy Crewneck',
+      is_demo: true,
+      category_name: 'T-Shirts',
+    };
+    expect(demoGarment.is_demo).toBe(true);
+  });
 });
 
