@@ -138,3 +138,4 @@ export function BlankCatalogFilter({ products }: BlankCatalogFilterProps) {
     </div>
   );
 }
+
